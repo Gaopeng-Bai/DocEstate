@@ -185,28 +185,56 @@ class pdf_processing:
 
     def remove_no_table_images(self):
         file_name = []
-        for file in self.image_files:
+        allTestDataName = []
+        for filename in os.listdir(self.images):
+            if filename.endswith('.png'):  # 文件名中不包含'pre'字符串
+                # print(filename)
+                allTestDataName.append(filename)
+
+        allTestDataName.sort(key=lambda x: int(x[:-4]))
+
+        for file in allTestDataName:
+            if system == "Windows":
+                file = self.images + "\\" + file
+            else:
+                file = self.images + "/" + file
             data = ocr_core(file)
             if not ("Bestandsverzeichnis" in data or "Bastandsvarzeichnis" in data or
                     "Erste Abteilung" in data or
                     "Zweite Abteilung" in data or
                     "Dritte Abteilung" in data or "Dritta Abteilung" in data or "Dritts Abteilung" in data):
                 os.remove(file)
-        self.load_files()
+        # self.load_files()
+        allTestDataName = []
+        for filename in os.listdir(self.images):
+            if filename.endswith('.png'):  # 文件名中不包含'pre'字符串
+                # print(filename)
+                allTestDataName.append(filename)
+
+        allTestDataName.sort(key=lambda x: int(x[:-4]))
         a = 0
-        for file in self.image_files:
+        for file in allTestDataName:
             if system == "Windows":
+                file = self.images + "\\" + file
                 old_file_name = file.split("\\")[1].split(".png")[0]
             else:
-                old_file_name = file.split("\\")[1].split(".png")[0]
+                file = self.images + "/" + file
+                old_file_name = file.split("/")[1].split(".png")[0]
 
             file_name.append(int(old_file_name))
             a = min(file_name)
         cache_file = []
         cache_newName = []
-        for file in self.image_files:
-            old_file_name = file.split("\\")[1].split(".png")[0]
-            new_name = file.split("\\")[0] + "\\" + str(int(old_file_name) - a) + ".png"
+        for file in allTestDataName:
+            if system == "Windows":
+                file = self.images + "\\" + file
+                old_file_name = file.split("\\")[1].split(".png")[0]
+                new_name = file.split("\\")[0] + "\\" + str(int(old_file_name) - a) + ".png"
+            else:
+                file = self.images + "/" + file
+                old_file_name = file.split("/")[1].split(".png")[0]
+                new_name = file.split("/")[0] + "/" + str(int(old_file_name) - a) + ".png"
+
             if int(old_file_name) > 9:
                 cache_file.append(file)
                 cache_newName.append(new_name)
@@ -217,16 +245,22 @@ class pdf_processing:
 
     def Processing(self):
         page = 0
+        self.load_files()
         allTestDataName = []
-        for filename in os.listdir(self.image_files):
+        for filename in os.listdir(self.images):
             if filename.endswith('.png'):  # 文件名中不包含'pre'字符串
                 # print(filename)
                 allTestDataName.append(filename)
 
         allTestDataName.sort(key=lambda x: int(x[:-4]))
 
-        self.load_files()
-        for file in self.image_files:
+        for file in allTestDataName:
+            if system == "Windows":
+                file = self.images + "\\" + file
+                current_page = int(file.split("\\")[1].split(".png")[0])
+            else:
+                file = self.images + "/" + file
+                current_page = int(file.split("/")[1].split(".png")[0])
 
             data = ocr_core(file)
             print(file)
@@ -269,7 +303,7 @@ class pdf_processing:
 
             if "Bestandsverzeichnis" in data or "Bastandsvarzeichnis" in data:
 
-                if int(file.split("\\")[1].split(".png")[0]) == 0:
+                if current_page == 0:
                     # 1-4 Bestandsverzeichnis
                     print("processing Bestandsverzeichnis first page")
                     if len(conn["x"]) == 8:
@@ -308,7 +342,7 @@ class pdf_processing:
                                  conn["w"][i], path=self.BeS_dir)
 
             elif "Erste Abteilung" in data:
-                if int(file.split("\\")[1].split(".png")[0]) == 2:
+                if current_page == 2:
                     print("processing Erste Abteilung first page")
                     for i, value in enumerate(conn["x"]):
                         cut_area(img, len(conn["x"]) - i, value, conn["y"][i], conn["h"][i],
@@ -332,7 +366,7 @@ class pdf_processing:
                                  conn["w"][i], path=self.Zweite_dir)
 
             elif "Dritte Abteilung" in data or "Dritta Abteilung" in data or "Dritts Abteilung" in data:
-                if int(file.split("\\")[1].split(".png")[0]) < 8:
+                if current_page < 8:
                     print("processing Dritte 1 Abteilung first page")
                     page += 1
                     if page == 1:
@@ -722,7 +756,7 @@ if __name__ == '__main__':
     # # cut each columns into images dir, now only test on table of 'Bestandsverzeichnis'
     t.Processing()
 
-    # # cut rows into pieces, Bestandsverzeichnis, Erste Abteilung, Zweite Abteilung, Dritte1 Abteilung, Dritte2 Abteilung
+    # # # cut rows into pieces, Bestandsverzeichnis, Erste Abteilung, Zweite Abteilung, Dritte1 Abteilung, Dritte2 Abteilung
     tables = ["Bestandsverzeichnis", "Erste Abteilung", "Zweite Abteilung", "Dritte1 Abteilung"]
     for i in tables:
         t.split_rows(flag=i, gap=40)

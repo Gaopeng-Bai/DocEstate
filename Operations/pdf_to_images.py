@@ -9,7 +9,7 @@
 # @Software: PyCharm
 # @Description: 
 # Reference:**********************************************
-import sys, fitz
+import fitz
 import os
 import datetime
 

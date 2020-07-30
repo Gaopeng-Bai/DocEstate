@@ -1,0 +1,8 @@
+xlutils
+xlwt
+xlrd
+pytesseract
+opencv-python
+fitz
+pillow
+PyMuPDF

@@ -9,17 +9,26 @@
 # @Software: PyCharm
 # @Description: 
 # Reference:**********************************************
-import xlwings as xw
+
+import xlrd as xw
+import xlwt as xt
+from xlutils.copy import copy
 
 
 class excel_operator:
-    def __init__(self, path="../../data_/38_GBA.xlsx", sheet= "Bestandsverzeichnis"):
-        wb = xw.Book(path)
-        self.sht = wb.sheets[sheet]
+    def __init__(self, path="../../data_/38_GBA.xlsx", sheet="Bestandsverzeichnis"):
+        data = xw.open_workbook(path)
+        # self.sht = wb.sheet_by_name(sheet)
+        ws = copy(data)
+        self.sht = ws.get_sheet(0)
+        self.sht.write(4, 0, "haha")
+        print(self.sht.nrows)
 
-    def write_line(self, value_list, cols=10):
-        last_ = self.lastRow(col=cols)
-        self.sht.range('A'+str(last_+1)).value = value_list
+    def write_line(self, value_list):
+        last_ = self.sht.nrows
+        columns = self.sht.ncols
+        for i in range(columns):
+            self.sht.write(last_+1, i, value_list[i])
 
     def lastRow(self,  col=10):
         """ Find the last row in the worksheet that contains data.
