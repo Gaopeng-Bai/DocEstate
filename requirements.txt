@@ -1,10 +1,10 @@
-xlutils
-xlwt
-xlrd
 pytesseract~=0.3.4
 opencv-python~=4.2.0.34
 fitz
 pillow~=7.2.0
 PyMuPDF
-xlwings~=0.20.0
+Windows OS:
+    xlwings~=0.20.0
+Mac or linux OS:
+    openpyxl
 numpy~=1.18.2

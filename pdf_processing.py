@@ -16,19 +16,16 @@ import cv2
 import numpy as np
 from Operations.pdf_to_images import pyMuPDF_fitz
 from Operations.Recognition import ocr_core
-from Operations.excel_operation import excel_operator
 from Operations.resolution_pixels import resize_pixels
 
 
 system = platform.system()
-def UsePlatform():
-    if system == "Windows":
 
-        print("Call Windows tasks")
-    elif system == "Linux":
-        print("Call Linux tasks")
-    else:
-        print("Other System tasks")
+if system == "Windows":
+
+    from Operations.excel_operation import excel_operator
+else:
+    from Operations.excel_operation_mac import excel_operator
 
 
 def width_calculate(image):
@@ -670,7 +667,7 @@ class pdf_processing:
                         except:
                             data.append(" ")
 
-                    excel.write_line(data)
+                    excel.write_line(data, cols=len(data))
             print("recognize Bestandsverzeichnis done")
 
         if flag == "Erste Abteilung":
@@ -696,7 +693,7 @@ class pdf_processing:
                             except Exception as e:
                                 data.append(" ")
 
-                    excel.write_line(data)
+                    excel.write_line(data, cols=len(data))
 
             print("recognize Erste Abteilung done")
 
@@ -722,7 +719,7 @@ class pdf_processing:
                             except Exception as e:
                                 data.append(" ")
 
-                    excel.write_line(data)
+                    excel.write_line(data, cols=len(data))
             print("recognize Zweite Abteilung done")
 
         if flag == "Dritte1 Abteilung":
@@ -747,7 +744,7 @@ class pdf_processing:
                             except Exception as e:
                                 data.append(" ")
 
-                    excel.write_line(data)
+                    excel.write_line(data, cols=len(data))
 
             print("recognize Dritte1 Abteilung done")
 
@@ -773,7 +770,7 @@ class pdf_processing:
                             except Exception as e:
                                 data.append(" ")
 
-                    excel.write_line(data)
+                    excel.write_line(data, cols=len(data))
 
             print("recognize Dritte2 Abteilung done")
 
@@ -787,13 +784,13 @@ if __name__ == '__main__':
     t.Processing()
 
     # # # cut rows into pieces, Bestandsverzeichnis, Erste Abteilung, Zweite Abteilung, Dritte1 Abteilung, Dritte2 Abteilung
-    # tables = ["Bestandsverzeichnis", "Erste Abteilung", "Zweite Abteilung", "Dritte1 Abteilung"]
-    # for i in tables:
-    #     t.split_rows(flag=i, gap=40)
-    #     t.recognition(flag=i)
-    # if t.dritte2:
-    #     t.split_rows(flag="Dritte2 Abteilung", gap=40)
-    #     t.recognition(flag="Dritte2 Abteilung")
+    tables = ["Bestandsverzeichnis", "Erste Abteilung", "Zweite Abteilung", "Dritte1 Abteilung"]
+    for i in tables:
+        t.split_rows(flag=i, gap=40)
+        t.recognition(flag=i)
+    if t.dritte2:
+        t.split_rows(flag="Dritte2 Abteilung", gap=40)
+        t.recognition(flag="Dritte2 Abteilung")
 
-    t.split_rows(flag="Bestandsverzeichnis", gap=40)
-    t.recognition(flag="Bestandsverzeichnis")
+    # t.split_rows(flag="Bestandsverzeichnis", gap=40)
+    # t.recognition(flag="Bestandsverzeichnis")
