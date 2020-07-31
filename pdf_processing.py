@@ -429,8 +429,15 @@ class pdf_processing:
             print("split rows Bestandsverzeichnis done")
 
         if flag == "Erste Abteilung":
+            allTestDataName = []
+            for filename in os.listdir(self.Erste_dir[0:-1]):
+                if filename.endswith('.png'):  # 文件名中不包含'pre'字符串
+                    # print(filename)
+                    allTestDataName.append(filename)
 
-            for i, image in enumerate(os.listdir(self.Erste_dir[0:-1])):
+            allTestDataName.sort(key=lambda x: int(x[:-4]))
+
+            for i, image in enumerate(allTestDataName):
                 if i < 5:
                     split_flag = rows_cut(self.Erste_dir + str(1) + ".png", gap=gap)
                     self.rows = len(split_flag)
@@ -474,8 +481,15 @@ class pdf_processing:
             print("split rows Erste Abteilung done")
 
         if flag == "Zweite Abteilung":
+            allTestDataName = []
+            for filename in os.listdir(self.Zweite_dir[0:-1]):
+                if filename.endswith('.png'):  # 文件名中不包含'pre'字符串
+                    # print(filename)
+                    allTestDataName.append(filename)
 
-            for i, image in enumerate(os.listdir(self.Zweite_dir[0:-1])):
+            allTestDataName.sort(key=lambda x: int(x[:-4]))
+
+            for i, image in enumerate(allTestDataName):
                 if i < 3:
                     split_flag = rows_cut(self.Zweite_dir + str(1) + ".png", gap=gap)
                     self.rows = len(split_flag)
@@ -757,13 +771,13 @@ if __name__ == '__main__':
     t.Processing()
 
     # # # cut rows into pieces, Bestandsverzeichnis, Erste Abteilung, Zweite Abteilung, Dritte1 Abteilung, Dritte2 Abteilung
-    tables = ["Bestandsverzeichnis", "Erste Abteilung", "Zweite Abteilung", "Dritte1 Abteilung"]
-    for i in tables:
-        t.split_rows(flag=i, gap=40)
-        t.recognition(flag=i)
-    if t.dritte2:
-        t.split_rows(flag="Dritte2 Abteilung", gap=40)
-        t.recognition(flag="Dritte2 Abteilung")
+    # tables = ["Bestandsverzeichnis", "Erste Abteilung", "Zweite Abteilung", "Dritte1 Abteilung"]
+    # for i in tables:
+    #     t.split_rows(flag=i, gap=40)
+    #     t.recognition(flag=i)
+    # if t.dritte2:
+    #     t.split_rows(flag="Dritte2 Abteilung", gap=40)
+    #     t.recognition(flag="Dritte2 Abteilung")
 
-    # t.split_rows(flag="Bestandsverzeichnis", gap=40)
+    t.split_rows(flag="Dritte2 Abteilung", gap=40)
     # t.recognition(flag="Bestandsverzeichnis")
