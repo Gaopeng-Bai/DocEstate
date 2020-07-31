@@ -89,6 +89,22 @@ def delete_lines(img_path):
     cv2.imwrite(img_path, img=image)
 
 
+def count_height(image):
+    img = cv2.imread(image, 0)
+    height, width = img.shape[:2]
+
+    # Horizontal projection count the number of black dots in each row
+    horizontal = np.zeros(height, dtype=np.int32)
+    for y in range(height, 0):
+        for x in range(0, width):
+            if img[y, x] != 255:
+                horizontal[y] += 1
+
+    for i in range(height, 0):
+        if horizontal[i] > 0:  # Enter the text area from the blank area
+            return i
+
+
 def rows_cut(image, gap=20):
     img = cv2.imread(image, 0)
     height, width = img.shape[:2]
@@ -324,7 +340,7 @@ class pdf_processing:
                             if 3 <= i <= 4:
                                 pass
                             elif i < 3:
-                                cut_area(img, len(conn["x"]) - i - 2, value, conn["y"][i], conn["h"][i],
+                                cut_area(img, len(conn["x"]) - i - 1, value, conn["y"][i], conn["h"][i],
                                          conn["w"][i], path=self.BeS_dir)
                             else:
                                 cut_area(img, len(conn["x"]) - i, value, conn["y"][i], conn["h"][i],
@@ -779,5 +795,5 @@ if __name__ == '__main__':
     #     t.split_rows(flag="Dritte2 Abteilung", gap=40)
     #     t.recognition(flag="Dritte2 Abteilung")
 
-    t.split_rows(flag="Dritte2 Abteilung", gap=40)
-    # t.recognition(flag="Bestandsverzeichnis")
+    t.split_rows(flag="Bestandsverzeichnis", gap=40)
+    t.recognition(flag="Bestandsverzeichnis")
