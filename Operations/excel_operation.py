@@ -13,7 +13,7 @@ import xlwings as xw
 
 
 class excel_operator:
-    def __init__(self, path="../../data_/38_GBA.xlsx", sheet= "Bestandsverzeichnis"):
+    def __init__(self, path="../../data_/38_GBA.xlsx", sheet="Bestandsverzeichnis"):
         wb = xw.Book(path)
         self.sht = wb.sheets[sheet]
 

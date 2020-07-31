@@ -218,7 +218,7 @@ class pdf_processing:
             if not ("Bestandsverzeichnis" in data or "Bastandsvarzeichnis" in data or
                     "Erste Abteilung" in data or
                     "Zweite Abteilung" in data or
-                    "Dritte Abteilung" in data or "Dritta Abteilung" in data or "Dritts Abteilung" in data):
+                    "Dritte Abteilung" in data or "Dritta Abteilung" in data or "Dritta Abteitung" in data or "Dritts Abteilung" in data):
                 os.remove(file)
         # self.load_files()
         allTestDataName = []
@@ -381,7 +381,7 @@ class pdf_processing:
                         cut_area(img, len(conn["x"]) - i + 3, value, conn["y"][i], conn["h"][i],
                                  conn["w"][i], path=self.Zweite_dir)
 
-            elif "Dritte Abteilung" in data or "Dritta Abteilung" in data or "Dritts Abteilung" in data:
+            elif "Dritte Abteilung" in data or "Dritta Abteilung" in data or "Dritta Abteitung" in data or "Dritts Abteilung" in data:
                 if current_page < 8:
                     print("processing Dritte 1 Abteilung first page")
                     page += 1
