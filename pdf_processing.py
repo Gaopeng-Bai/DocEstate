@@ -291,9 +291,9 @@ class pdf_processing:
                     a.append(h)
                 if 900 > h >= 860:
                     print("h:{}, x: {}, y:{}, w: {}".format(h, x, y, w))
-                    conn["x"].append(x)
+                    conn["x"].append(x-6)
                     conn["y"].append(y)
-                    conn["w"].append(w)
+                    conn["w"].append(w+6)
                     conn["h"].append(h)
                     # cv2.rectangle(img, (x, y), (x + w, y + h), (153, 153, 0), 3)
             if len(conn["x"]) == 0:
@@ -304,9 +304,9 @@ class pdf_processing:
                         a.append(h)
                     if 665 > h >= 570:
                         print("h:{}, x: {}, y:{}, w: {}".format(h, x, y, w))
-                        conn["x"].append(x)
+                        conn["x"].append(x-6)
                         conn["y"].append(y)
-                        conn["w"].append(w)
+                        conn["w"].append(w+6)
                         conn["h"].append(h)
             # test table located.
 
@@ -780,17 +780,17 @@ if __name__ == '__main__':
     # convert pdf to images
     t.pdf_to_images(pdf='../data_/38_GBA/Freudenstadt.pdf')
     t.remove_no_table_images()
-    # # cut each columns into images dir, now only test on table of 'Bestandsverzeichnis'
+    # # cut each columns into images dir
     t.Processing()
 
     # # # cut rows into pieces, Bestandsverzeichnis, Erste Abteilung, Zweite Abteilung, Dritte1 Abteilung, Dritte2 Abteilung
     tables = ["Bestandsverzeichnis", "Erste Abteilung", "Zweite Abteilung", "Dritte1 Abteilung"]
-    for i in tables:
-        t.split_rows(flag=i, gap=40)
-        t.recognition(flag=i)
     if t.dritte2:
         t.split_rows(flag="Dritte2 Abteilung", gap=40)
         t.recognition(flag="Dritte2 Abteilung")
+    for i in tables:
+        t.split_rows(flag=i, gap=40)
+        t.recognition(flag=i)
 
     # t.split_rows(flag="Bestandsverzeichnis", gap=40)
     # t.recognition(flag="Bestandsverzeichnis")
